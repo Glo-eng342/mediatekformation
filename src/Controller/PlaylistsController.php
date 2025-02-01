@@ -37,7 +37,7 @@ class PlaylistsController extends AbstractController
      */
     private $categorieRepository;
     
-    function __construct(PlaylistRepository $playlistRepository,
+    public function __construct(PlaylistRepository $playlistRepository,
             CategorieRepository $categorieRepository,
             FormationRepository $formationRespository)
     {
@@ -64,8 +64,7 @@ class PlaylistsController extends AbstractController
     #[Route('/playlists/tri/{champ}/{ordre}', name: 'playlists.sort')]
     public function sort($champ, $ordre): Response
     {
-        switch($champ)
-        {
+        switch($champ) {
             case "name":
                 $playlists = $this->playlistRepository->findAllOrderByName($ordre);
                 break;
