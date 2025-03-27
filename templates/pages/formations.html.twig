@@ -1,7 +1,7 @@
 {% extends "basefront.html.twig" %}
 {% block body %}
     <table class="table table-striped">
-         <caption>Tableau des formations avec leurs playlists et catégories</caption>
+        <caption>Tableau des formations avec leurs playlists et catégories</caption>
         <thead>
             <tr>
                 <th class="text-left align-top" scope="col">
@@ -79,10 +79,11 @@
                         {% if formation.miniature %}
                             <a href="{{ path('formations.showone', {id:formation.id}) }}">
                                 <img src="{{ formation.miniature }}"
-                                alt="Miniature de la formation {{ formation.title }}">
+                                     alt="Miniature de la formation {{ formation.title }}">
                             </a>
                         {% endif %}
                     </td>
+
                 </tr>
             {% endfor %}
         </tbody>

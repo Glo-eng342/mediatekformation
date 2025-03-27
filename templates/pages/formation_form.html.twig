@@ -1,0 +1,39 @@
+{# empty Twig template #}
+{% extends "basefront.html.twig" %}
+{% block body %}
+    {% block title %}Gestion des Formations{% endblock %}
+    <div class="container mt-4">
+        <h2>{{ form.vars.value.id is defined ? 'Modifier' : 'Ajouter' }} une Formation</h2>
+            {{ form_start(form) }}
+                <div class="mb-3">
+                {{ form_label(form.title, 'Titre') }}
+                {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                
+                <div class="mb-3">
+                {{ form_label(form.description, 'Description') }}
+                {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                
+                <div class="mb-3">
+                {{ form_label(form.videoId, 'Identifiant de la vidéo') }}
+                {{ form_widget(form.videoId, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                
+                <div class="mb-3">
+                {{ form_label(form.publishedAt, 'Date de publication') }}
+                {{ form_widget(form.publishedAt, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                
+                <div class="mb-3">
+                {{ form_label(form.playlist, 'Identifiant du playlist') }}
+                {{ form_widget(form.playlist, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                
+                <button type="submit" class="btn btn-info mb-2 btn-sm">{{ form.vars.value.id is defined ? 'Modifier' : 'Ajouter' }}</button>
+                
+            {{ form_end(form) }}
+            <a href="{{ path('formations') }}" class="btn btn-secondary mt-3">Retour à la liste</a>
+    </div>
+{% endblock %}
+    

@@ -2,7 +2,12 @@
 {% block body %}
     <div class="row mt-3">
         <div class="col">
+            Nombre de formation <br>
+            <a href="{{ path('playlists.sort', {champ:'name', ordre:'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>
+            <a href="{{ path('playlists.sort', {champ:'name', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>
             <h4 class="text-info mt-5">{{ playlist.name }}</h4>
+            <strong>Nombre de formations : </strong> {{ playlist.formations|length }}
+            {{ playlistformations|length }}
             <strong>catégories : </strong>
                 <!-- boucle pour afficher les catégories -->
                 {% set anccategorie = '' %}
