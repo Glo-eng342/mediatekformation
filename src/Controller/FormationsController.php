@@ -7,16 +7,26 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Formation;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\Playlist;
 
 /**
  * Controleur des formations
  *
  * @author emds
  */
+
 class FormationsController extends AbstractController
 {
 
     private const VIEW_FORMATIONS = "pages/formations.html.twig";
+    private const VIEW_FORMATION = "pages/formation_form.html.twig";
+
             
     /**
      *
@@ -80,5 +90,72 @@ class FormationsController extends AbstractController
             'formation' => $formation
         ]);
     }
+    
+      
+    #[Route('/formations/ajouter/', name: 'formations.add' )]
+    public function add (Request $request) : Response
+    {
+        $formation = new Formation();
+        $form = $this->createFormBuilder($formation)
+                     ->add('title', TextType::class)
+                     ->add('description', TextareaType::class)
+                     ->add('videoId', TextType::class)
+                     ->add('playlist', EntityType::class, [
+    'class' => Playlist::class,
+    'choice_label' => 'id', // Ou 'name' si la playlist a un champ `name`
+    'placeholder' => 'Sélectionner une playlist',
+    'attr' => ['class' => 'form-control']
+])
+                     ->add('publishedAt', DateType::class, ['widget' => 'single_text'])
+                     ->add('save', SubmitType::class, ['label' => 'Ajouter une formation'])
+                     ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $formation = $form->getData();
+            $this->formationRepository->add($formation);
+            return $this->redirectToRoute('formations');
+        }
+ 
+        return $this->render('pages/formation_form.html.twig', [
+            'form' => $form->createView(),
+        ]);
+               
+                
+    }
+    // Edit Formation
+    #[Route('/formations/editer/{id}', name: 'formations.edit')]
+        public function edit(Request $request, $id): Response {
+    $formation = $this->formationRepository->find($id);
+    if (!$formation) {
+        throw $this->createNotFoundException('Formation not found');
+    }
+ 
+    $form = $this->createFormBuilder($formation)
+        ->add('title', TextType::class)
+        ->add('description', TextareaType::class)
+        ->add('videoId', TextType::class)
+        ->add('playlist', EntityType::class, [
+    'class' => Playlist::class,
+    'choice_label' => 'id', // Ou 'name' si la playlist a un champ `name`
+    'placeholder' => 'Sélectionner une playlist',
+    'attr' => ['class' => 'form-control']
+])
+        ->add('publishedAt', DateType::class, ['widget' => 'single_text'])
+        ->add('save', SubmitType::class, ['label' => 'Edit Formation'])
+        ->getForm();
+ 
+    $form->handleRequest($request);
+ 
+    if ($form->isSubmitted() && $form->isValid()) {
+        $formation = $form->getData();
+        $this->formationRepository->add($formation); // Mise à jour
+        return $this->redirectToRoute('formations');
+    }
+ 
+    return $this->render('pages/formation_form.html.twig', [
+        'form' => $form->createView(),
+    ]);
+    }
+    
     
 }
