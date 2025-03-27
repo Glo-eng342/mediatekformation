@@ -11,12 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: FormationRepository::class)]
 class Formation
 {
-
     /**
      * Début de chemin vers les images
      */
     private const CHEMIN_IMAGE = "https://i.ytimg.com/vi/";
-        
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -67,13 +66,12 @@ class Formation
 
     public function getPublishedAtString(): string
     {
-        if($this->publishedAt == null)
-        {
+        if ($this->publishedAt == null) {
             return "";
         }
         return $this->publishedAt->format('d/m/Y');
     }
-    
+
     public function getTitle(): ?string
     {
         return $this->title;
@@ -112,14 +110,14 @@ class Formation
 
     public function getMiniature(): ?string
     {
-        return self::CHEMIN_IMAGE.$this->videoId."/default.jpg";
+        return self::CHEMIN_IMAGE . $this->videoId . "/default.jpg";
     }
 
     public function getPicture(): ?string
     {
-        return self::CHEMIN_IMAGE.$this->videoId."/hqdefault.jpg";
+        return self::CHEMIN_IMAGE . $this->videoId . "/hqdefault.jpg";
     }
-    
+
     public function getPlaylist(): ?playlist
     {
         return $this->playlist;
@@ -155,4 +153,6 @@ class Formation
 
         return $this;
     }
+    
+    
 }

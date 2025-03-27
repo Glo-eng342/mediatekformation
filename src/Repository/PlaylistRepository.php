@@ -27,7 +27,7 @@ class PlaylistRepository extends ServiceEntityRepository
         $this->getEntityManager()->remove($entity);
         $this->getEntityManager()->flush();
     }
-    
+
     /**
      * Retourne toutes les playlists triées sur le nom de la playlist
      * @param type $champ
@@ -43,7 +43,7 @@ class PlaylistRepository extends ServiceEntityRepository
                 ->getQuery()
                 ->getResult();
     }
-	
+
     /**
      * Enregistrements dont un champ contient une valeur
      * ou tous les enregistrements si la valeur est vide
@@ -52,12 +52,12 @@ class PlaylistRepository extends ServiceEntityRepository
      * @param type $table si $champ dans une autre table
      * @return Playlist[]
      */
-    public function findByContainValue($champ, $valeur, $table=""): array
+    public function findByContainValue($champ, $valeur, $table = ""): array
     {
-        if($valeur==""){
+        if ($valeur == "") {
             return $this->findAllOrderByName('ASC');
         }
-        if($table==""){
+        if ($table == "") {
             return $this->createQueryBuilder('p')
                     ->leftjoin('p.formations', 'f')
                     ->where('p.'.$champ.' LIKE :valeur')
@@ -78,5 +78,16 @@ class PlaylistRepository extends ServiceEntityRepository
                     ->getResult();
         }
     }
-    
+
+    public function findAllOrderByNbFormations($order): array
+    {
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.formations', 'f')
+            ->groupBy('p.id')
+            ->orderBy('COUNT(f.id)', $order)  // On trie en fonction du nombre de formations
+            ->getQuery()
+            ->getResult();
+    }
+
+
 }

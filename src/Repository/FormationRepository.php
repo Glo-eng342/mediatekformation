@@ -35,15 +35,14 @@ class FormationRepository extends ServiceEntityRepository
      * @param type $table si $champ dans une autre table
      * @return Formation[]
      */
-    public function findAllOrderBy($champ, $ordre, $table=""): array
+    public function findAllOrderBy($champ, $ordre, $table = ""): array
     {
-        if($table=="")
-        {
+        if ($table == "") {
             return $this->createQueryBuilder('f')
                     ->orderBy('f.'.$champ, $ordre)
                     ->getQuery()
                     ->getResult();
-        }else{
+        } else {
             return $this->createQueryBuilder('f')
                     ->join('f.'.$table, 't')
                     ->orderBy('t.'.$champ, $ordre)
@@ -60,20 +59,19 @@ class FormationRepository extends ServiceEntityRepository
      * @param type $table si $champ dans une autre table
      * @return Formation[]
      */
-    public function findByContainValue($champ, $valeur, $table=""): array
+    public function findByContainValue($champ, $valeur, $table = ""): array
     {
-        if($valeur=="")
-        {
+        if ($valeur == "") {
             return $this->findAll();
         }
-        if($table==""){
+        if ($table == "") {
             return $this->createQueryBuilder('f')
                     ->where('f.'.$champ.' LIKE :valeur')
                     ->orderBy('f.publishedAt', 'DESC')
                     ->setParameter('valeur', '%'.$valeur.'%')
                     ->getQuery()
                     ->getResult();
-        }else{
+        } else {
             return $this->createQueryBuilder('f')
                     ->join('f.'.$table, 't')
                     ->where('t.'.$champ.' LIKE :valeur')
@@ -83,26 +81,28 @@ class FormationRepository extends ServiceEntityRepository
                     ->getResult();
         }
     }
-    
+
     /**
      * Retourne les n formations les plus récentes
      * @param type $nb
      * @return Formation[]
      */
-    public function findAllLasted($nb) : array {
+    public function findAllLasted($nb): array
+    {
         return $this->createQueryBuilder('f')
                 ->orderBy('f.publishedAt', 'DESC')
                 ->setMaxResults($nb)
                 ->getQuery()
                 ->getResult();
     }
-    
+
     /**
      * Retourne la liste des formations d'une playlist
      * @param type $idPlaylist
      * @return array
      */
-    public function findAllForOnePlaylist($idPlaylist): array{
+    public function findAllForOnePlaylist($idPlaylist): array
+    {
         return $this->createQueryBuilder('f')
                 ->join('f.playlist', 'p')
                 ->where('p.id=:id')
@@ -111,5 +111,5 @@ class FormationRepository extends ServiceEntityRepository
                 ->getQuery()
                 ->getResult();
     }
-    
+
 }
